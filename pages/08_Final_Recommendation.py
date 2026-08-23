@@ -86,12 +86,26 @@ with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It E
     with tab_rec_cred2:
         st.markdown(
             """
-            #### ⚙️ **How Outcome Was Evaluated & Methods Used:**
-            - **Multi-Criteria Decision Analysis (MCDA):** Standardized weighted sum formulation combining inverse price/delivery ratios and direct quality/warranty scaling.
-            - **Deterministic Spec Verification Gate:** Enforces non-negotiable electrical rules ($\text{Rating} \ge 1250\text{ kVA}$, $\text{kV} = 11.0$) before commercial rankings.
-            - **Technology Stack:** Built with Python 3.10+, Pandas, NumPy, and Plotly — avoiding unpredictable ML models so that all procurement decisions remain 100% auditable.
+            #### ⚙️ **How Output is Processed: The Decision Engine Architecture (ML Analogy vs GridSelect Engine)**
+
+            | Pipeline Stage | Standard ML Pipeline (e.g. Random Forest / Neural Net) | GridSelect Decision Engine (Power Systems Sourcing) |
+            | :--- | :--- | :--- |
+            | **1. Inputs / Dataset** | Historical training data, noisy features, test splits | Real-time project specs (2000 kW, 11 kV) + Structured vendor bids (Price, Delivery, kVA, Warranty) |
+            | **2. Processing Model** | Black-box statistical learning (approximates probabilities) | **Dual-Stage Engine:** (1) Hard-Constraint Engineering Gate + (2) Multi-Criteria Decision Analysis (MCDA) |
+            | **3. Constraint Checking** | Soft statistical probabilities (risk of hallucination / physics violations) | **Hard Deterministic Engineering Rules:** $\\text{Offered kVA} \\ge 1250\\text{ kVA}$, $\\text{kV} == 11.0$ (Zero tolerance for undersizing) |
+            | **4. Feature Weighting** | Hidden weights & loss optimization | **User-Defined Normalized Weights:** Price (40%), Technical (30%), Delivery (15%), Quality (10%), Warranty (5%) |
+            | **5. Decision Output** | Probability estimate with opaque reasoning | **100% Auditable Ranking Matrix** with exact mathematical step-by-step proof for every decimal point |
+
+            ---
+
+            #### 🛠️ **The 4 Computational Stages in Detail:**
+            1. **Input Calibration:** Active load ($2000\\text{ kW}$) sized into $2 \\times 1250\\text{ kVA}$ transformer scope.
+            2. **Stage 1 (Engineering Gate):** Compares offered kVA and nominal voltages. Flags **Supplier B (1000 kVA)** with `⚠️ Technical Mismatch` ($-40\\text{ pts}$).
+            3. **Stage 2 (MCDA Vector Normalization):** Computes normalized inverse price/delivery and direct quality/warranty vectors, multiplying by active weights $\\sum (S_j \\times W_j)$.
+            4. **Stage 3 (Gated Award Determination):** Ranks qualified bidders, applies targeted price negotiation savings, and generates final award recommendation.
             """
         )
+
 
     with tab_rec_cred3:
         st.markdown(

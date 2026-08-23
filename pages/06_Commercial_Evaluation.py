@@ -260,28 +260,53 @@ with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It E
     with tab_cred2:
         st.markdown(
             """
-            #### ⚙️ **How the System Evaluates Outcomes & What Methods Were Used:**
-            
-            1. **Multi-Criteria Decision Analysis (MCDA — Weighted Sum Model):**
-               - Instead of subjective guessing, the engine uses **mathematical normalization vectors**:
-                 - *Price Vector (Inverse):* $S_{\\text{price}} = 100 \\times (\\text{Min Price} / \\text{Bid Price})$
-                 - *Delivery Vector (Inverse):* $S_{\\text{deliv}} = 100 \\times (\\text{Min Weeks} / \\text{Bid Weeks})$
-                 - *Technical Vector (Rule-based):* $S_{\\text{tech}} = 100 - (40 \\times \\text{Critical Mismatches})$
-                 - *Quality Vector (Direct):* $S_{\\text{qual}} = \\text{ISO / Factory Audit Score}$
-                 - *Warranty Vector (Direct):* $S_{\\text{warr}} = 100 \\times (\\text{Warranty} / \\text{Max Warranty})$
-               - **Composite Ranking:** Multiplies each normalized vector by your user-defined weights $\\sum (S_i \\times W_i)$.
+            #### ⚙️ **How Output is Processed: The Decision Engine Architecture (ML Analogy vs GridSelect Engine)**
 
-            2. **Deterministic Engineering Gating Engine:**
-               - Applies strict electrical rules: $\\text{Offered kVA} \\ge \\text{Required kVA}$ and $\\text{Offered kV} == \\text{Required kV}$.
-               - Any critical failure triggers a disqualification flag that prevents non-compliant equipment from winning awards.
+            In data science, we often explain how an ML model processes inputs into outputs. Here is the exact breakdown comparing a standard ML pipeline with **GridSelect's deterministic decision engine**:
 
-            3. **Software & Computational Stack Used:**
-               - **Python 3.10+ & NumPy / Pandas:** For high-precision mathematical vector normalization, tabular filtering, and non-destructive data cloning.
-               - **Plotly Visual Modeling:** Multi-dimensional radar charts and price delta bar plots.
-               - **Streamlit Reactive State Engine:** Real-time state synchronization across all 8 stages.
-               - **Why Rule-Based instead of ML:** Infrastructure procurement demands **100% explainability**. Deterministic rules eliminate black-box AI hallucinations and guarantee full audit compliance.
+            | Pipeline Stage | Standard ML Pipeline (e.g. Random Forest / Neural Net) | GridSelect Decision Engine (Power Systems Sourcing) |
+            | :--- | :--- | :--- |
+            | **1. Inputs / Dataset** | Historical training data, noisy features, test splits | Real-time project specs (2000 kW, 11 kV) + Structured vendor bids (Price, Delivery, kVA, Warranty) |
+            | **2. Processing Model** | Black-box statistical learning (approximates probabilities) | **Dual-Stage Engine:** (1) Hard-Constraint Engineering Gate + (2) Multi-Criteria Decision Analysis (MCDA) |
+            | **3. Constraint Checking** | Soft statistical probabilities (risk of hallucination / physics violations) | **Hard Deterministic Engineering Rules:** $\\text{Offered kVA} \\ge 1250\\text{ kVA}$, $\\text{kV} == 11.0$ (Zero tolerance for undersizing) |
+            | **4. Feature Weighting** | Hidden weights & loss optimization | **User-Defined Normalized Weights:** Price (40%), Technical (30%), Delivery (15%), Quality (10%), Warranty (5%) |
+            | **5. Decision Output** | Probability estimate with opaque reasoning | **100% Auditable Ranking Matrix** with exact mathematical step-by-step proof for every decimal point |
+
+            ---
+
+            #### 🛠️ **The 4 Computational Stages in Detail:**
+
+            1. **Input Ingestion & Baseline Calibration:**
+               - Ingests active load ($2000\\text{ kW}$) and nominal system voltage ($11\\text{ kV}$).
+               - Structures baseline requirement into $2 \\times 1250\\text{ kVA}$ Step-Down Transformer packages.
+
+            2. **Stage 1 — Technical Constraint Conditioning Engine:**
+               - Evaluates nominal ratings and voltage compliance against RFQ requirements:
+                 $$\\text{Condition} = (\\text{Offered kVA} \\ge 1250) \\land (\\text{Primary kV} == 11.0) \\land (\\text{Secondary kV} == 0.415)$$
+               - Deducts $-40\\text{ points}$ per critical failure $\\rightarrow$ Flags **Supplier B (1000 kVA)** with `⚠️ Technical Mismatch`.
+
+            3. **Stage 2 — Multi-Criteria Vector Normalization (MCDA):**
+               - Normalizes heterogeneous dimensions (rupees, weeks, years, quality scores) onto a standard $[0, 100]$ interval using inverse and direct ratios:
+                 - **Price Vector (Inverse):** $S_{\\text{price}} = 100 \\times (\\text{Min Price} / P_i)$
+                 - **Delivery Vector (Inverse):** $S_{\\text{deliv}} = 100 \\times (\\text{Min Weeks} / D_i)$
+                 - **Technical Vector (Rule-based):** $S_{\\text{tech}} = 100 - (40 \\times \\text{Critical Mismatches})$
+                 - **Quality Vector (Direct):** $S_{\\text{qual}} = \\text{ISO / Factory Audit Score}$
+                 - **Warranty Vector (Direct):** $S_{\\text{warr}} = 100 \\times (W_i / \\text{Max Warranty})$
+               - Multiplies each vector by normalized weights: $\\text{Overall Score} = \\sum_{j} (S_j \\times W_j)$.
+
+            4. **Stage 3 — Gated Ranking & Award Determination:**
+               - Filters only technically qualified candidates ($\\text{is\\_qualified} == \\text{True}$).
+               - Sorts qualified candidates descending by Overall Score $\\rightarrow$ Awards **🟢 Recommended** badge to Rank #1.
+               - Retains disqualified bidders (Supplier B) for transparent price anchoring and negotiation leverage.
+
+            ---
+
+            #### 💡 **Why This Rule-Based Engine Beats ML for Infrastructure Procurement:**
+            - **Legal & Audit Compliance:** High-voltage substation contracts require legally defensible decisions that can be presented to auditors, board members, and government regulators. An ML model cannot explain *why* it assigned a specific probability.
+            - **Zero Risk of Hallucination:** Deterministic rules ensure that safety-critical electrical limits (e.g. transformer thermal capacity) are strictly respected.
             """
         )
+
 
     with tab_cred3:
         st.markdown(
