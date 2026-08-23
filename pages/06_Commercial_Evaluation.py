@@ -234,10 +234,11 @@ with col_callout2:
     )
     st.success(f"✅ **Procurement Recommendation:** {best_overall_sup.get('supplier_name')} balances technical compliance, lead time, warranty, and price.")
 
-# DEDICATED AUDIT & CREDIBILITY SECTION: Where processed, credibility & exact reasons
-with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its Credibility & Why You Get This Result**", expanded=True):
-    tab_cred1, tab_cred2, tab_cred3 = st.tabs([
+# DEDICATED AUDIT & CREDIBILITY SECTION: Where processed, credibility, methods & exact reasons
+with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It Evaluates Outcomes & What Methods Were Used**", expanded=True):
+    tab_cred1, tab_cred2, tab_cred3, tab_cred4 = st.tabs([
         "📡 Where Output Is Processed From",
+        "⚙️ How It Evaluates Outcomes & What It Used",
         "🎖️ Credibility & Engineering Integrity",
         "🎯 Exact Reasons Why You Get This Output"
     ])
@@ -259,6 +260,32 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
     with tab_cred2:
         st.markdown(
             """
+            #### ⚙️ **How the System Evaluates Outcomes & What Methods Were Used:**
+            
+            1. **Multi-Criteria Decision Analysis (MCDA — Weighted Sum Model):**
+               - Instead of subjective guessing, the engine uses **mathematical normalization vectors**:
+                 - *Price Vector (Inverse):* $S_{\\text{price}} = 100 \\times (\\text{Min Price} / \\text{Bid Price})$
+                 - *Delivery Vector (Inverse):* $S_{\\text{deliv}} = 100 \\times (\\text{Min Weeks} / \\text{Bid Weeks})$
+                 - *Technical Vector (Rule-based):* $S_{\\text{tech}} = 100 - (40 \\times \\text{Critical Mismatches})$
+                 - *Quality Vector (Direct):* $S_{\\text{qual}} = \\text{ISO / Factory Audit Score}$
+                 - *Warranty Vector (Direct):* $S_{\\text{warr}} = 100 \\times (\\text{Warranty} / \\text{Max Warranty})$
+               - **Composite Ranking:** Multiplies each normalized vector by your user-defined weights $\\sum (S_i \\times W_i)$.
+
+            2. **Deterministic Engineering Gating Engine:**
+               - Applies strict electrical rules: $\\text{Offered kVA} \\ge \\text{Required kVA}$ and $\\text{Offered kV} == \\text{Required kV}$.
+               - Any critical failure triggers a disqualification flag that prevents non-compliant equipment from winning awards.
+
+            3. **Software & Computational Stack Used:**
+               - **Python 3.10+ & NumPy / Pandas:** For high-precision mathematical vector normalization, tabular filtering, and non-destructive data cloning.
+               - **Plotly Visual Modeling:** Multi-dimensional radar charts and price delta bar plots.
+               - **Streamlit Reactive State Engine:** Real-time state synchronization across all 8 stages.
+               - **Why Rule-Based instead of ML:** Infrastructure procurement demands **100% explainability**. Deterministic rules eliminate black-box AI hallucinations and guarantee full audit compliance.
+            """
+        )
+
+    with tab_cred3:
+        st.markdown(
+            """
             #### 🎖️ **Why This Output is 100% Credible & Defensible:**
             - **No Black-Box AI / Guessing:** 100% deterministic, rule-based mathematical models. Every single score can be independently proven by an auditor.
             - **Power Systems Standard Compliance:** Evaluates transformers against nominal IEC/IS voltage classes and capacity rules.
@@ -266,7 +293,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
             """
         )
 
-    with tab_cred3:
+    with tab_cred4:
         st.markdown(
             f"""
             #### 🎯 **Root-Cause Rationale (Why You See This Result):**
@@ -283,6 +310,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
         )
 
 st.markdown("---")
+
 
 
 # Commercial Evaluation Matrix Table

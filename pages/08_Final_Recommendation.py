@@ -60,9 +60,10 @@ st.markdown("### 🏆 **Executive Procurement Recommendations by Equipment Packa
 st.caption("Deterministic, rule-based award recommendations based strictly on verified technical compliance and multi-factor commercial scoring.")
 
 # DEDICATED AUDIT & CREDIBILITY SECTION
-with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its Credibility & Why You Get This Result**", expanded=True):
-    tab_rec_cred1, tab_rec_cred2, tab_rec_cred3 = st.tabs([
+with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It Evaluates Outcomes & What Methods Were Used**", expanded=True):
+    tab_rec_cred1, tab_rec_cred2, tab_rec_cred3, tab_rec_cred4 = st.tabs([
         "📡 Where Output Was Processed From",
+        "⚙️ How Outcome Was Evaluated & Tech Used",
         "🎖️ Why This Decision Is 100% Credible",
         "🎯 Exact Reasons For The Award Decision"
     ])
@@ -85,6 +86,16 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
     with tab_rec_cred2:
         st.markdown(
             """
+            #### ⚙️ **How Outcome Was Evaluated & Methods Used:**
+            - **Multi-Criteria Decision Analysis (MCDA):** Standardized weighted sum formulation combining inverse price/delivery ratios and direct quality/warranty scaling.
+            - **Deterministic Spec Verification Gate:** Enforces non-negotiable electrical rules ($\text{Rating} \ge 1250\text{ kVA}$, $\text{kV} = 11.0$) before commercial rankings.
+            - **Technology Stack:** Built with Python 3.10+, Pandas, NumPy, and Plotly — avoiding unpredictable ML models so that all procurement decisions remain 100% auditable.
+            """
+        )
+
+    with tab_rec_cred3:
+        st.markdown(
+            """
             #### 🎖️ **Engineering Credibility & Governance:**
             - **Zero AI Hallucinations:** 100% deterministic mathematical evaluation — no guessing or generative black-box logic.
             - **Safety-First Engineering Gate:** Ensures non-compliant equipment cannot be purchased, preventing transformer thermal overloads and electrical fires.
@@ -92,7 +103,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
             """
         )
 
-    with tab_rec_cred3:
+    with tab_rec_cred4:
         st.markdown(
             """
             #### 🎯 **Why You Are Getting This Exact Output:**
@@ -102,6 +113,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where This Output Was Processed, Its
         )
 
 st.markdown("---")
+
 
 
 total_orig_val = 0.0
