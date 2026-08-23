@@ -171,8 +171,30 @@ for eq_type, c_data in comm_scores.items():
 
         st.markdown("---")
 
+# Interactive Financial Rollup Calculation Breakdown
+with st.expander("🧮 **CLICK HERE: How Total Project Value & Financial Savings are Calculated**", expanded=False):
+    st.markdown(
+        """
+        ### 📐 **Total Project Financial Rollup Formulas:**
+        1. **Line Item Commitment:**
+           $$\\text{Line Total} = \\text{Effective Unit Price} \\times \\text{Required Quantity}$$
+
+        2. **Total Original Bid Value:**
+           $$\\text{Total Original Value} = \\sum (\\text{Original Unit Price}_i \\times \\text{Quantity}_i)$$
+
+        3. **Total Negotiated Commitment Value:**
+           $$\\text{Total Negotiated Value} = \\sum (\\text{Negotiated Unit Price}_i \\times \\text{Quantity}_i)$$
+
+        4. **Total Project Cost Savings (Value Created):**
+           $$\\text{Total Savings} = \\text{Total Original Value} - \\text{Total Negotiated Value}$$
+        """
+    )
+
+st.markdown("---")
+
 # PROJECT SUMMARY & FINANCIAL ROLLUP
 st.markdown("### 📊 **Total Project Procurement Summary**")
+
 
 col_sum1, col_sum2, col_sum3, col_sum4 = st.columns(4)
 with col_sum1:

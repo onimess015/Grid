@@ -86,20 +86,100 @@ weights_dict = {
     "warranty": w_warr
 }
 
-# Formula Explanation Expander
-with st.expander("ℹ️ **How is the Commercial Score calculated? (Transparent Formulas)**"):
-    st.markdown(
-        """
-        - **Price Score** = `100 × (Lowest Quoted Price / Supplier Quoted Price)` *(Lower price is better)*
-        - **Delivery Score** = `100 × (Fastest Delivery Weeks / Supplier Delivery Weeks)` *(Shorter delivery is better)*
-        - **Technical Score** = `Score verified in Step 5 (Base 100, -40 for critical spec mismatch)`
-        - **Quality Score** = `Supplier Track Record & Quality Rating (0–100)`
-        - **Warranty Score** = `100 × (Supplier Warranty Years / Longest Warranty Offered)`
-        - **Overall Score** = `(Price Score × W_price) + (Tech Score × W_tech) + (Deliv Score × W_deliv) + (Qual Score × W_qual) + (Warr Score × W_warr)`
-        """
-    )
+# Formula Explanation Expander & Interactive Live Math Walkthrough
+with st.expander("🧮 **CLICK HERE: Step-by-Step Calculation Breakdown & Live Mathematical Proof**", expanded=False):
+    st.markdown("### 📐 **How Each Score & Output is Calculated (Step-by-Step)**")
+    
+    tab_calc1, tab_calc2, tab_calc3 = st.tabs([
+        "1️⃣ Mathematical Formulas",
+        "2️⃣ Live Supplier Math (Current Values)",
+        "3️⃣ Award Qualification Rule"
+    ])
+
+    with tab_calc1:
+        st.markdown(
+            """
+            Each supplier bid is evaluated across **5 distinct criteria** using standardized, transparent formulas:
+
+            1. **Price Score (Inverse Scale — Cheaper is Better):**
+               $$\\text{Price Score} = 100 \\times \\frac{\\text{Lowest Quoted Price Among All Bidders}}{\\text{Supplier's Quoted Price}}$$
+               *(The cheapest bidder receives 100 points; higher priced bidders receive proportionally lower scores).*
+
+            2. **Delivery Score (Inverse Scale — Faster is Better):**
+               $$\\text{Delivery Score} = 100 \\times \\frac{\\text{Shortest Lead Time (Weeks)}}{\\text{Supplier's Delivery Time (Weeks)}}$$
+               *(The fastest delivery receives 100 points).*
+
+            3. **Technical Score (Rule-Based Compliance from Step 5):**
+               $$\\text{Technical Score} = 100 - (40 \\times \\text{Critical Mismatches}) - (10 \\times \\text{Non-Critical Mismatches})$$
+               *(Undersized transformer kVA rating = -40 points penalty).*
+
+            4. **Quality & Track Record Score (Direct Scale):**
+               $$\\text{Quality Score} = \\text{Supplier ISO / Factory Audit Rating (0 to 100)}$$
+
+            5. **Warranty Score (Direct Scale — Longer is Better):**
+               $$\\text{Warranty Score} = 100 \\times \\frac{\\text{Supplier Warranty (Years)}}{\\text{Longest Warranty Offered (Years)}}$$
+
+            6. **Composite Weighted Overall Score:**
+               $$\\text{Overall Score} = (S_{\\text{price}} \\times W_{\\text{price}}) + (S_{\\text{tech}} \\times W_{\\text{tech}}) + (S_{\\text{deliv}} \\times W_{\\text{deliv}}) + (S_{\\text{qual}} \\times W_{\\text{qual}}) + (S_{\\text{warr}} \\times W_{\\text{warr}})$$
+               *where weights are normalized so $\\sum W = 1.0$.*
+            """
+        )
+
+    with tab_calc2:
+        st.markdown("#### 🔢 **Live Mathematical Walkthrough with Active Quotes:**")
+        if current_quotes:
+            valid_prices = [float(q.get("unit_price_inr_lakh", 0)) for q in current_quotes if float(q.get("unit_price_inr_lakh", 0)) > 0]
+            valid_delivs = [int(q.get("delivery_weeks", 0)) for q in current_quotes if int(q.get("delivery_weeks", 0)) > 0]
+            valid_warrs = [int(q.get("warranty_years", 0)) for q in current_quotes if int(q.get("warranty_years", 0)) > 0]
+            
+            min_p = min(valid_prices) if valid_prices else 1.0
+            min_d = min(valid_delivs) if valid_delivs else 1
+            max_w = max(valid_warrs) if valid_warrs else 1
+            
+            st.info(f"📊 **Current Benchmarks:** Lowest Price = **₹{min_p:.2f}L** | Fastest Delivery = **{min_d} weeks** | Longest Warranty = **{max_w} years**")
+
+            calc_walkthrough = []
+            for q in current_quotes:
+                s_name = q.get("supplier_name", "")
+                p = float(q.get("unit_price_inr_lakh", 0))
+                d = int(q.get("delivery_weeks", 1))
+                w = int(q.get("warranty_years", 1))
+                t_score = float(tech_eval_map.get(s_name, {}).get("technical_score", q.get("technical_score", 90)))
+                q_score = float(q.get("quality_score", 90))
+
+                p_score = min(100.0, 100.0 * min_p / p) if p > 0 else 0
+                d_score = min(100.0, 100.0 * min_d / d) if d > 0 else 0
+                w_score = min(100.0, 100.0 * w / max_w) if max_w > 0 else 100
+
+                tot_w = w_price + w_tech + w_deliv + w_qual + w_warr or 100.0
+                ov = (p_score * w_price + t_score * w_tech + d_score * w_deliv + q_score * w_qual + w_score * w_warr) / tot_w
+
+                calc_walkthrough.append({
+                    "Supplier": s_name,
+                    "Price Math": f"100 × ({min_p:.1f} / {p:.1f}) = {p_score:.1f}",
+                    "Delivery Math": f"100 × ({min_d} / {d}) = {d_score:.1f}",
+                    "Tech Score": f"{t_score:.1f}",
+                    "Quality Score": f"{q_score:.1f}",
+                    "Warranty Math": f"100 × ({w} / {max_w}) = {w_score:.1f}",
+                    "Weighted Overall Math": f"({p_score:.1f}×{w_price} + {t_score:.1f}×{w_tech} + {d_score:.1f}×{w_deliv} + {q_score:.1f}×{w_qual} + {w_score:.1f}×{w_warr}) / {tot_w:.0f} = {ov:.1f}"
+                })
+
+            st.dataframe(pd.DataFrame(calc_walkthrough), use_container_width=True, hide_index=True)
+        else:
+            st.write("No active quotations to display live math.")
+
+    with tab_calc3:
+        st.markdown(
+            """
+            #### 🛡️ **Award Qualification & Exclusion Logic:**
+            - **The Critical Rule:** A bidder with any critical technical mismatch (e.g. **Supplier B offering 1000 kVA instead of required 1250 kVA**) receives a `-40 point` penalty and is tagged with **⚠️ Technical Mismatch**.
+            - **Exclusion from Award:** Even though Supplier B achieves a Price Score of **100.0** (lowest price ₹39L), the system's ranking algorithm filters out technically mismatched bidders when selecting the **Best Overall Recommendation**.
+            - **Audit Trail:** The mismatched bidder remains fully visible in the comparison matrix and charts for audit compliance and negotiation leverage.
+            """
+        )
 
 st.markdown("---")
+
 
 # Compute commercial scores and rankings
 evaluated_quotes = compute_commercial_scores(current_quotes, weights_dict, tech_eval_map)

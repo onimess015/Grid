@@ -64,17 +64,24 @@ selected_eq_type = st.selectbox(
 req_item = next((item for item in eq_list if item.get("equipment_type") == selected_eq_type), {})
 current_quotes = quotes_dict.get(selected_eq_type, [])
 
-# Explander: Technical Scoring Methodology
-with st.expander("ℹ️ **How is the Technical Score calculated? (Transparent Scoring Formula)**"):
+# Explander: Technical Scoring Methodology & Live Calculation Breakdown
+with st.expander("🧮 **CLICK HERE: Step-by-Step Technical Scoring Calculation & Mismatch Deductions**", expanded=False):
+    st.markdown("### 📐 **How Technical Score & Qualification are Calculated:**")
     st.markdown(
         """
-        - **Starting Base Score:** `100 points`
-        - **Critical Parameter Mismatch** (e.g. undersized kVA rating, voltage mismatch): `-40 points`
-        - **Non-Critical Parameter Mismatch:** `-10 points`
-        - **Score Bounds:** Minimum `0`, Maximum `100`
-        - **Qualification Rule:** A supplier with **any critical mismatch** is flagged as **⚠️ Technical Mismatch** and excluded from the recommended winning pool in commercial evaluation, though retained in all comparison matrices for full auditability.
+        - **1. Base Starting Score:** Every evaluated supplier starts with **100.0 points**.
+        - **2. Critical Parameter Mismatch Penalty (`-40 points` per critical failure):**
+          - **Transformer Capacity:** If Offered kVA < Required kVA $\\rightarrow$ **-40 points** (e.g. Supplier B offers 1000 kVA when 1250 kVA is required $\\rightarrow$ $100 - 40 = 60.0$).
+          - **Voltage Levels:** If Primary kV or Secondary kV fails exact nominal match $\\rightarrow$ **-40 points**.
+        - **3. Non-Critical Parameter Mismatch Penalty (`-10 points`):**
+          - Minor accessory or auxiliary variance.
+        - **4. Mathematical Floor & Ceiling:** $\\text{Technical Score} = \\max(0.0, \\min(100.0, \\text{Calculated Score}))$.
+        - **5. Qualification Gate:**
+          - **Qualified (🟢):** 0 critical mismatches AND Technical Score $\\ge 60.0$.
+          - **Disqualified (⚠️ Technical Mismatch):** 1 or more critical mismatches (strictly excluded from final winning recommendations).
         """
     )
+
 
 st.markdown("---")
 

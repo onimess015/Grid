@@ -113,7 +113,28 @@ with col_inp2:
 # Live calculation of discount & savings
 discount_calc = apply_discount(orig_price, discount_pct)
 
+# Interactive Negotiation Calculation Breakdown
+with st.expander("🧮 **CLICK HERE: How Negotiated Prices, Savings & Re-Ranking are Calculated**", expanded=False):
+    st.markdown(
+        f"""
+        ### 📐 **Step-by-Step Negotiation Formulas:**
+        1. **Negotiated Price:**
+           $$\\text{{Negotiated Price}} = \\text{{Original Price}} \\times \\left(1 - \\frac{{\\text{{Discount \\%}}}}{{100}}\\right)$$
+           $$\\text{{Calculated: }} ₹{orig_price:.2f}\\text{{ lakh}} \\times (1 - {discount_pct/100:.2f}) = \\mathbf{{₹{discount_calc['negotiated_price']:.2f}\\text{{ lakh}}}}$$
+
+        2. **Financial Value Created (Cost Savings):**
+           $$\\text{{Project Savings}} = \\text{{Original Price}} - \\text{{Negotiated Price}} = ₹{orig_price:.2f}\\text{{L}} - ₹{discount_calc['negotiated_price']:.2f}\\text{{L}} = \\mathbf{{₹{discount_calc['savings']:.2f}\\text{{ lakh}}}}$$
+
+        3. **Re-Ranking Algorithm:**
+           - The affected supplier's price is updated from **₹{orig_price:.2f}L** to **₹{discount_calc['negotiated_price']:.2f}L**.
+           - Its Price Score and composite Overall Score are recomputed dynamically.
+           - All competing suppliers are re-sorted to determine whether the negotiation triggered a rank shift (e.g. #2 $\\rightarrow$ #1).
+           - **Audit Guarantee:** Original baseline quotes are preserved without overwrite.
+        """
+    )
+
 st.markdown("---")
+
 
 # 4 Key Negotiation KPI Cards
 st.markdown("### 💰 **Negotiation Impact & Value Creation**")
