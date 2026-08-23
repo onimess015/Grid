@@ -233,6 +233,29 @@ def render_sidebar():
 
         st.markdown("---")
 
+        with st.expander("❓ **Quick Guide & Purpose**"):
+
+            st.markdown(
+                """
+                **⚡ What is GridSelect?**  
+                A rule-based Power Systems procurement decision platform linking engineering specs with commercial bid evaluation.
+
+                **🎯 The Core Principle:**  
+                *Cheapest $\\neq$ Best.*  
+                Technically mismatched hardware (e.g. undersized transformers) is flagged and excluded from awards.
+
+                **🧭 8-Step Workflow:**  
+                1. Project Specs  
+                2. Equipment Schedule  
+                3. RFQ Document  
+                4. Supplier Bids  
+                5. Tech Evaluation (TBE)  
+                6. Commercial Scoring (CBE)  
+                7. Price Negotiation  
+                8. Final Award Recommendation  
+                """
+            )
+
         # Reset Workflow with Safe Confirmation
         if not st.session_state.get("show_reset_confirm", False):
             if st.button("🔄 Reset Project", use_container_width=True, help="Clear all project state"):

@@ -44,6 +44,74 @@ st.markdown(
     """
 )
 
+# INTERACTIVE EXPLANATION BAR & COMPREHENSIVE GUIDE
+with st.expander("📘 **CLICK HERE: How GridSelect Works, Why It Gives You an Edge & How to Use It**", expanded=False):
+    tab_edge, tab_sections, tab_how_to = st.tabs([
+        "💡 Why This Project & The Edge",
+        "🧭 How Each Section Helps",
+        "🚀 Simple How-to-Use Guide"
+    ])
+
+    with tab_edge:
+        st.markdown("### 💡 **Why GridSelect Matters & What Problems It Solves**")
+        st.markdown(
+            """
+            In real power infrastructure projects (factories, substations, data centres), **procurement is not just about buying the cheapest item**. 
+            GridSelect is built to solve 3 real-world industrial problems:
+
+            1. **The 'Cheapest Trap' Problem:**
+               - **Problem:** Often, procurement teams buy the lowest-priced quote (e.g. Supplier B) to save money. But Supplier B might have quoted an **undersized 1000 kVA transformer** instead of the required **1250 kVA**, leading to dangerous overloading, equipment failure, and massive plant downtime.
+               - **How GridSelect Solves It:** It automatically checks technical compliance in Step 5 before comparing prices in Step 6. Mismatched suppliers are flagged and cannot win the recommendation.
+
+            2. **The Engineering vs Commercial Communication Gap:**
+               - **Problem:** Electrical engineers speak in voltages, kVA, and protection relays, while procurement managers speak in budgets, payment terms, and delivery timelines.
+               - **How GridSelect Solves It:** It unites technical specifications and commercial scores into **one transparent, 5-factor scoring model**.
+
+            3. **The 'Black Box' AI Mistrust Problem:**
+               - **Problem:** Critical infrastructure decisions cannot be made by opaque AI or hidden algorithms. Auditors and project owners require clear formulas.
+               - **How GridSelect Solves It:** 100% deterministic, rule-based formulas where every point is explainable.
+
+            ---
+            #### 🌟 **How This Project Gives You an Edge in Interviews & Industry:**
+            - **Connects Two Worlds:** Shows you understand both electrical hardware (Transformers, Panels, ACB, VCB, Cables, CT/PT) and commercial procurement strategy (RFQs, TBE, CBE, Negotiation).
+            - **Demonstrates Sound Judgment:** Proves you know why **Lowest Quoted Price $\\neq$ Best Procurement Decision**.
+            - **Executive-Ready:** Produces instant, professional RFQ documents and decision audit reports in Markdown.
+            """
+        )
+
+    with tab_sections:
+        st.markdown("### 🧭 **Section-by-Section: What Each Step Does & Why It Helps**")
+        st.markdown(
+            """
+            | Step | Section Name | What Happens in Simple Words | Why It Helps the Project |
+            | :--- | :--- | :--- | :--- |
+            | **01** | **Project Requirement** | Enter facility load (kW), voltage (11 kV), budget, and target delivery weeks. | Establishes the project baseline and prevents missing critical engineering parameters. |
+            | **02** | **Equipment Requirement** | Automatically converts project needs into structured line items (`EQ-001`, `EQ-002`, ...) with engineering definitions. | Organizes electrical packages into a traceable schedule with completeness verification. |
+            | **03** | **RFQ Generator** | Packages all equipment requirements and commercial conditions into a formal quotation request (`RFQ-2026-001`). | Ensures all competing suppliers bid on the exact same technical scope and payment terms. |
+            | **04** | **Supplier Quotations** | Ingests vendor bids with prices, delivery weeks, quality ratings, and offered specs. | Consolidates all supplier offers in one place for side-by-side analysis. |
+            | **05** | **Technical Evaluation (TBE)** | Compares offered capacity and voltages against the RFQ. Flags **Supplier B (1000 kVA)** with a ⚠️ Mismatch. | Prevents buying non-compliant hardware while keeping data visible for audit integrity. |
+            | **06** | **Commercial Evaluation (CBE)** | Uses 5 weighted sliders (Price, Tech, Delivery, Quality, Warranty) and Plotly radar charts. | Clearly separates the **Cheapest Bid** from the **Best Overall Value**. |
+            | **07** | **Negotiation Simulator** | Apply a 5% discount to Supplier A (₹42L $\\rightarrow$ ₹39.9L, Saving ₹2.1L) and watch rankings re-calculate. | Tests commercial counter-offers and quantifies financial savings without corrupting original quotes. |
+            | **08** | **Final Recommendation** | Generates an executive award card with dynamic justifications, total project savings, and downloadable report. | Delivers a boardroom-ready procurement recommendation report backed by transparent math. |
+            """
+        )
+
+    with tab_how_to:
+        st.markdown("### 🚀 **Quick Start: How to Run the 2-Minute Demo**")
+        st.markdown(
+            """
+            Follow these 4 simple steps to experience the complete workflow:
+
+            1. **Step 1:** Click **Start New Project** below $\\rightarrow$ Keep default values (ABC Plant, 2000 kW) $\\rightarrow$ Click **Save Project Requirement** $\\rightarrow$ Proceed.
+            2. **Steps 2 & 3:** Review the equipment list and RFQ preview $\\rightarrow$ Proceed to **Supplier Quotations**.
+            3. **Steps 4 & 5:** Click **Load Pre-Configured Demo Suppliers** $\\rightarrow$ Go to **Technical Evaluation** to see why Supplier B is flagged with ⚠️ Mismatch.
+            4. **Steps 6 to 8:** View Commercial Evaluation $\\rightarrow$ Run a **5% negotiation on Supplier A** in Step 7 $\\rightarrow$ View the Final Recommendation card and download the full report in Step 8!
+            """
+        )
+
+st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+
+
 # 4 Key Dashboard Metrics
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
