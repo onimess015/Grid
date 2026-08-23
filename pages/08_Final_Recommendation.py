@@ -61,9 +61,10 @@ st.caption("Deterministic, rule-based award recommendations based strictly on ve
 
 # DEDICATED AUDIT & CREDIBILITY SECTION
 with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It Evaluates Outcomes & What Methods Were Used**", expanded=True):
-    tab_rec_cred1, tab_rec_cred2, tab_rec_cred3, tab_rec_cred4 = st.tabs([
+    tab_rec_cred1, tab_rec_cred2, tab_rec_cred3, tab_rec_cred4, tab_rec_cred5 = st.tabs([
         "📡 Where Output Was Processed From",
-        "⚙️ How Outcome Was Evaluated & Tech Used",
+        "⚙️ How Output is Processed (ML vs Engine)",
+        "🔢 Step-by-Step Worked-Out Math (Example)",
         "🎖️ Why This Decision Is 100% Credible",
         "🎯 Exact Reasons For The Award Decision"
     ])
@@ -106,8 +107,61 @@ with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It E
             """
         )
 
-
     with tab_rec_cred3:
+        st.markdown(
+            """
+            #### 🔢 **Step-by-Step Worked-Out Math (Concrete Example with Real Numbers)**
+
+            Let's trace the exact arithmetic for **3 real bidders** competing for a $2 \\times 1250\\text{ kVA}$ transformer order:
+
+            | Bidder | Quoted Price | Delivery Time | Offered Specs | ISO Quality | Warranty |
+            | :--- | :---: | :---: | :---: | :---: | :---: |
+            | **Supplier A** | ₹42.00 Lakhs | 8 Weeks | 1250 kVA (Compliant) | 94 / 100 | 5 Years |
+            | **Supplier B** | ₹39.00 Lakhs | 10 Weeks | **1000 kVA (Undersized!)** | 88 / 100 | 3 Years |
+            | **Supplier C** | ₹45.00 Lakhs | 6 Weeks | 1250 kVA (Compliant) | 96 / 100 | 5 Years |
+
+            ---
+
+            #### 📐 **1. Individual Factor Calculations:**
+            - **Price Scores ($100 \\times \\frac{\\text{Min Price}}{\\text{Price}}$):** *(Lowest is ₹39.00L)*
+              - Supplier A: $100 \\times (39.00 / 42.00) = \\mathbf{92.9\\text{ pts}}$
+              - Supplier B: $100 \\times (39.00 / 39.00) = \\mathbf{100.0\\text{ pts}}$
+              - Supplier C: $100 \\times (39.00 / 45.00) = \\mathbf{86.7\\text{ pts}}$
+
+            - **Delivery Scores ($100 \\times \\frac{\\text{Min Weeks}}{\\text{Weeks}}$):** *(Fastest is 6 wks)*
+              - Supplier A: $100 \\times (6 / 8) = \\mathbf{75.0\\text{ pts}}$
+              - Supplier B: $100 \\times (6 / 10) = \\mathbf{60.0\\text{ pts}}$
+              - Supplier C: $100 \\times (6 / 6) = \\mathbf{100.0\\text{ pts}}$
+
+            - **Technical Compliance Gate (Base 100, -40 for undersized):**
+              - Supplier A: $\\mathbf{100.0\\text{ pts}}$ (🟢 Qualified)
+              - Supplier B: $100 - 40 = \\mathbf{60.0\\text{ pts}}$ (⚠️ Disqualified from Award)
+              - Supplier C: $\\mathbf{100.0\\text{ pts}}$ (🟢 Qualified)
+
+            - **Warranty Scores ($100 \\times \\frac{\\text{Years}}{\\text{Max Years}}$):** *(Max is 5 yrs)*
+              - Supplier A (5 yrs): $100 \\times (5 / 5) = \\mathbf{100.0\\text{ pts}}$
+              - Supplier B (3 yrs): $100 \\times (3 / 5) = \\mathbf{60.0\\text{ pts}}$
+              - Supplier C (5 yrs): $100 \\times (5 / 5) = \\mathbf{100.0\\text{ pts}}$
+
+            ---
+
+            #### 🧮 **2. Composite Weighted Score Formula ($\sum S_j \times W_j$):**
+            *Weights: Price 40%, Technical 30%, Delivery 15%, Quality 10%, Warranty 5%*
+
+            - **Supplier A:** $(92.9 \\times 0.40) + (100 \\times 0.30) + (75 \\times 0.15) + (94 \\times 0.10) + (100 \\times 0.05) = 37.16 + 30.00 + 11.25 + 9.40 + 5.00 = \\mathbf{92.81 / 100}$
+            - **Supplier B:** $(100.0 \\times 0.40) + (60 \\times 0.30) + (60 \\times 0.15) + (88 \\times 0.10) + (60 \\times 0.05) = 40.00 + 18.00 + 9.00 + 8.80 + 3.00 = \\mathbf{78.80 / 100}$
+            - **Supplier C:** $(86.7 \\times 0.40) + (100 \\times 0.30) + (100 \\times 0.15) + (96 \\times 0.10) + (100 \\times 0.05) = 34.68 + 30.00 + 15.00 + 9.60 + 5.00 = \\mathbf{94.28 / 100}$
+
+            ---
+
+            #### 🤝 **3. Negotiation Impact Example (5% on Supplier A):**
+            - New Price = ₹39.90L $\\rightarrow$ New Price Score = $100 \\times (39.00 / 39.90) = \\mathbf{97.7\\text{ pts}}$.
+            - New Overall Score = $39.08 + 30.00 + 11.25 + 9.40 + 5.00 = \\mathbf{94.73 / 100}$.
+            - **Result:** Supplier A jumps to **#1 Rank**, creating **₹4.20 Lakhs in total project savings**!
+            """
+        )
+
+    with tab_rec_cred4:
         st.markdown(
             """
             #### 🎖️ **Engineering Credibility & Governance:**
@@ -117,7 +171,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It E
             """
         )
 
-    with tab_rec_cred4:
+    with tab_rec_cred5:
         st.markdown(
             """
             #### 🎯 **Why You Are Getting This Exact Output:**
@@ -127,6 +181,7 @@ with st.expander("🛡️ **DECISION AUDIT: Where Output Was Processed, How It E
         )
 
 st.markdown("---")
+
 
 
 
