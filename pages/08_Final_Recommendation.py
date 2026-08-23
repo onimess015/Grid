@@ -136,20 +136,21 @@ for eq_type, c_data in comm_scores.items():
     with st.container():
         st.markdown(
             f"""
-            <div class="gs-card" style="border-left: 6px solid #2E7D32;">
+            <div class="gs-card" style="border-left: 6px solid #4ADE80;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: #2E7D32; text-transform: uppercase;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: #4ADE80; text-transform: uppercase;">
                         RECOMMENDED SUPPLIER AWARD — {eq_type.upper()}
                     </div>
                     <span class="badge-success">🟢 Technically Qualified & Awarded</span>
                 </div>
-                <div style="font-size: 1.6rem; font-weight: 800; color: #0B2545; margin: 0.35rem 0;">
+                <div style="font-size: 1.6rem; font-weight: 800; color: #F0F6FC; margin: 0.35rem 0;">
                     {winner_name}
                 </div>
-                <div style="font-size: 0.95rem; color: #475569; margin-bottom: 0.75rem;">
+                <div style="font-size: 0.95rem; color: #8B949E; margin-bottom: 0.75rem;">
                     <strong>Scope:</strong> {qty} × {eq_item.get('description', eq_type)}
                 </div>
             </div>
+
             """,
             unsafe_allow_html=True
         )

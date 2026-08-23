@@ -19,71 +19,77 @@ DEMO_DATA_LABEL = "Demo data — hypothetical values for educational illustratio
 
 CUSTOM_CSS = """
 <style>
-/* GridSelect Custom Theme */
+/* GridSelect Industrial Dark Theme */
 :root {
-    --primary-color: #0B2545;
+    --primary-color: #5FA8D3;
     --secondary-color: #1B4965;
-    --accent-color: #5FA8D3;
-    --success-color: #2E7D32;
-    --warning-color: #F9A825;
-    --danger-color: #C62828;
-    --bg-color: #F5F7FA;
-    --card-bg: #FFFFFF;
-    --text-color: #1A1A2E;
+    --accent-color: #62B6CB;
+    --success-color: #4ADE80;
+    --warning-color: #FACC15;
+    --danger-color: #F87171;
+    --bg-color: #0D1117;
+    --card-bg: #161B22;
+    --border-color: #30363D;
+    --text-color: #E6EDF3;
+    --text-muted: #8B949E;
 }
 
 /* Page Header */
 .gridselect-header {
-    background: linear-gradient(135deg, #0B2545 0%, #1B4965 100%);
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
     padding: 1.5rem 2rem;
     border-radius: 10px;
     color: #FFFFFF;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 12px rgba(11, 37, 69, 0.15);
+    border: 1px solid #334155;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 .gridselect-header h1 {
-    color: #FFFFFF !important;
+    color: #F0F6FC !important;
     margin: 0;
     font-size: 1.85rem;
     font-weight: 700;
     letter-spacing: -0.5px;
 }
 .gridselect-header p {
-    color: #BEE1E6;
+    color: #94A3B8;
     margin: 0.35rem 0 0 0;
     font-size: 0.95rem;
 }
 
 /* Cards */
 .gs-card {
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
+    background: #161B22;
+    border: 1px solid #30363D;
     border-radius: 8px;
     padding: 1.25rem;
     margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    color: #E6EDF3;
 }
 
 .gs-card-highlight {
-    background: #F8FAFC;
-    border-left: 4px solid #1B4965;
+    background: #1C2128;
+    border-left: 4px solid #5FA8D3;
     border-radius: 4px 8px 8px 4px;
     padding: 1rem 1.25rem;
     margin-bottom: 1rem;
+    color: #E6EDF3;
 }
 
 /* Workflow Step Box */
 .step-box {
-    background: #FFFFFF;
-    border: 1px solid #CBD5E1;
+    background: #161B22;
+    border: 1px solid #30363D;
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     height: 100%;
 }
 .step-box:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    border-color: #5FA8D3;
+    box-shadow: 0 4px 12px rgba(95, 168, 211, 0.15);
 }
 .step-number {
     font-size: 0.75rem;
@@ -95,18 +101,19 @@ CUSTOM_CSS = """
 .step-title {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0B2545;
+    color: #F0F6FC;
     margin: 0.25rem 0;
 }
 .step-desc {
     font-size: 0.8rem;
-    color: #64748B;
+    color: #8B949E;
 }
 
 /* Badges */
 .badge-success {
-    background-color: #E8F5E9;
-    color: #2E7D32;
+    background-color: rgba(46, 125, 50, 0.25);
+    color: #4ADE80;
+    border: 1px solid rgba(74, 222, 128, 0.35);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: 600;
@@ -114,8 +121,9 @@ CUSTOM_CSS = """
     display: inline-block;
 }
 .badge-warning {
-    background-color: #FFF8E1;
-    color: #B78103;
+    background-color: rgba(249, 168, 37, 0.2);
+    color: #FACC15;
+    border: 1px solid rgba(250, 204, 21, 0.35);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: 600;
@@ -123,8 +131,9 @@ CUSTOM_CSS = """
     display: inline-block;
 }
 .badge-danger {
-    background-color: #FFEBEE;
-    color: #C62828;
+    background-color: rgba(198, 40, 40, 0.25);
+    color: #F87171;
+    border: 1px solid rgba(248, 113, 113, 0.35);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: 600;
@@ -132,8 +141,9 @@ CUSTOM_CSS = """
     display: inline-block;
 }
 .badge-neutral {
-    background-color: #EDF2F7;
-    color: #475569;
+    background-color: #21262D;
+    color: #8B949E;
+    border: 1px solid #30363D;
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: 600;
@@ -144,8 +154,8 @@ CUSTOM_CSS = """
 /* Small notice tag */
 .demo-tag {
     font-size: 0.75rem;
-    color: #64748B;
-    background: #F1F5F9;
+    color: #8B949E;
+    background: #21262D;
     padding: 2px 8px;
     border-radius: 4px;
     display: inline-block;

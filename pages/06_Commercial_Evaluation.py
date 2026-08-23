@@ -124,10 +124,10 @@ col_callout1, col_callout2 = st.columns(2)
 with col_callout1:
     st.markdown(
         f"""
-        <div class="gs-card" style="border-left: 5px solid #F9A825;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: #B78103; text-transform: uppercase;">💰 Lowest Quoted Price</div>
-            <div style="font-size: 1.4rem; font-weight: 700; color: #0B2545; margin: 0.25rem 0;">{lowest_price_sup.get('supplier_name', '—')} — ₹{lowest_price_sup.get('unit_price_inr_lakh', 0):.2f} lakh</div>
-            <div style="font-size: 0.85rem; color: #64748B;">
+        <div class="gs-card" style="border-left: 5px solid #FACC15;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #FACC15; text-transform: uppercase;">💰 Lowest Quoted Price</div>
+            <div style="font-size: 1.4rem; font-weight: 700; color: #F0F6FC; margin: 0.25rem 0;">{lowest_price_sup.get('supplier_name', '—')} — ₹{lowest_price_sup.get('unit_price_inr_lakh', 0):.2f} lakh</div>
+            <div style="font-size: 0.85rem; color: #8B949E;">
                 Status: <strong>{lowest_price_sup.get('status', '—')}</strong><br>
                 Overall Score: <strong>{lowest_price_sup.get('overall_score', 0):.1f} / 100</strong>
             </div>
@@ -141,10 +141,10 @@ with col_callout1:
 with col_callout2:
     st.markdown(
         f"""
-        <div class="gs-card" style="border-left: 5px solid #2E7D32;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: #2E7D32; text-transform: uppercase;">⭐ Best Overall Recommendation</div>
-            <div style="font-size: 1.4rem; font-weight: 700; color: #0B2545; margin: 0.25rem 0;">{best_overall_sup.get('supplier_name', '—')} — Overall Score: {best_overall_sup.get('overall_score', 0):.1f}</div>
-            <div style="font-size: 0.85rem; color: #64748B;">
+        <div class="gs-card" style="border-left: 5px solid #4ADE80;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #4ADE80; text-transform: uppercase;">⭐ Best Overall Recommendation</div>
+            <div style="font-size: 1.4rem; font-weight: 700; color: #F0F6FC; margin: 0.25rem 0;">{best_overall_sup.get('supplier_name', '—')} — Overall Score: {best_overall_sup.get('overall_score', 0):.1f}</div>
+            <div style="font-size: 0.85rem; color: #8B949E;">
                 Quoted Price: <strong>₹{best_overall_sup.get('unit_price_inr_lakh', 0):.2f} lakh</strong><br>
                 Technical Score: <strong>{best_overall_sup.get('technical_score', 0):.1f}</strong> | Delivery: <strong>{best_overall_sup.get('delivery_weeks', 0)} wks</strong>
             </div>
@@ -189,7 +189,7 @@ with col_g1:
     st.markdown("##### **1. Price Comparison (₹ Lakh)**")
     # Bar chart of prices
     df_plot = pd.DataFrame(ranked_quotes)
-    colors = ["#2E7D32" if x["is_qualified"] and x["supplier_name"] == best_overall_sup["supplier_name"] else ("#C62828" if not x["is_qualified"] else "#1B4965") for x in ranked_quotes]
+    colors = ["#4ADE80" if x["is_qualified"] and x["supplier_name"] == best_overall_sup["supplier_name"] else ("#F87171" if not x["is_qualified"] else "#5FA8D3") for x in ranked_quotes]
     
     fig_bar = go.Figure(data=[
         go.Bar(
@@ -206,7 +206,9 @@ with col_g1:
         yaxis_title="Price (₹ Lakh)",
         margin=dict(l=20, r=20, t=40, b=20),
         height=360,
-        plot_bgcolor="#FAFAFA"
+        paper_bgcolor="#161B22",
+        plot_bgcolor="#0D1117",
+        font=dict(color="#E6EDF3")
     )
     st.plotly_chart(fig_bar, use_container_width=True)
 
@@ -216,7 +218,7 @@ with col_g2:
     categories = ["Price", "Technical", "Delivery", "Quality", "Warranty"]
     fig_radar = go.Figure()
 
-    palette = ["#1B4965", "#C62828", "#5FA8D3", "#F9A825", "#2E7D32"]
+    palette = ["#5FA8D3", "#F87171", "#62B6CB", "#FACC15", "#4ADE80"]
     for idx, r in enumerate(ranked_quotes):
         values = [
             r["price_score"],
@@ -235,18 +237,23 @@ with col_g2:
             fill='toself',
             name=f"{r['supplier_name']} ({'Mismatched' if r['has_critical_mismatch'] else 'Qualified'})",
             line_color=palette[idx % len(palette)],
-            opacity=0.6
+            opacity=0.5
         ))
 
     fig_radar.update_layout(
         polar=dict(
-            radialaxis=dict(visible=True, range=[0, 100])
+            radialaxis=dict(visible=True, range=[0, 100], gridcolor="#30363D"),
+            angularaxis=dict(gridcolor="#30363D"),
+            bgcolor="#0D1117"
         ),
+        paper_bgcolor="#161B22",
+        font=dict(color="#E6EDF3"),
         showlegend=True,
         margin=dict(l=20, r=20, t=40, b=20),
         height=360
     )
     st.plotly_chart(fig_radar, use_container_width=True)
+
 
 st.markdown("---")
 
