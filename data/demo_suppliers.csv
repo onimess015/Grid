@@ -1,0 +1,13 @@
+supplier_name,equipment_type,unit_price_inr_lakh,delivery_weeks,technical_score,quality_score,warranty_years,payment_terms,offered_rating_kva,offered_primary_kv,offered_secondary_kv,notes
+Supplier A,Transformer,42.0,8,92,94,5,30% advance - 70% on delivery,1250,11.0,0.415,Tier-1 manufacturer meeting full spec
+Supplier B,Transformer,39.0,12,88,85,3,50% advance - 50% on delivery,1000,11.0,0.415,Lowest price but undersized rating (1000 kVA vs 1250 kVA required)
+Supplier C,Transformer,45.0,6,95,96,5,100% advance,1250,11.0,0.415,Premium offering with shortest delivery and highest quality
+Supplier A,HT Panel,18.0,10,90,92,3,20% advance - 80% on dispatch,0,11.0,0.0,Standard 11kV HT panel line
+Supplier B,HT Panel,16.5,14,84,80,2,30% advance - 70% on dispatch,0,11.0,0.0,Economy 11kV HT panel line
+Supplier C,HT Panel,20.0,8,94,95,5,10% advance - 90% LC,0,11.0,0.0,Heavy-duty 11kV HT panel line
+Supplier A,LT Panel,14.0,8,91,90,3,20% advance - 80% on dispatch,0,0.415,0.0,Modular LT distribution panel
+Supplier B,LT Panel,12.5,10,85,82,2,30% advance - 70% on dispatch,0,0.415,0.0,Compact LT distribution panel
+Supplier C,LT Panel,15.5,6,93,94,4,10% advance - 90% LC,0,0.415,0.0,Intelligent LT distribution panel
+Supplier A,Circuit Breaker,8.0,6,93,92,3,Direct payment,0,0.415,0.0,Type ACB with microprocessor trip unit
+Supplier B,Circuit Breaker,7.2,8,86,83,2,Direct payment,0,0.415,0.0,Type ACB standard thermal-magnetic
+Supplier C,Circuit Breaker,8.8,4,96,95,5,Direct payment,0,0.415,0.0,Type ACB digital protection relay

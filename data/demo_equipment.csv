@@ -1,0 +1,8 @@
+equipment_type,description,unit,key_spec_fields
+Transformer,Voltage transformation equipment,unit,Rating; Primary Voltage; Secondary Voltage
+HT Panel,HT distribution panel,unit,Voltage; Number of Feeders
+LT Panel,LT distribution panel,unit,Voltage; Number of Feeders
+Circuit Breaker,Protective switching device,unit,Type; Rated Voltage
+Cable,Electrical power cable,meter,Voltage Level; Length
+CT/PT,Measurement and protection transformer,set,Application
+Isolator,Electrical isolation device,unit,Voltage Level
