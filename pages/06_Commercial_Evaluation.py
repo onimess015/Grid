@@ -259,7 +259,96 @@ st.dataframe(df_comm, use_container_width=True, hide_index=True)
 
 st.caption(f"<span class='demo-tag'>{DEMO_DATA_LABEL}</span>", unsafe_allow_html=True)
 
+# DEDICATED OUTPUT CALCULATION EXPLANATION BAR (RIGHT BELOW TABLE)
+with st.expander("🧮 **CLICK HERE: How Every Score & Output in the Table Above Was Calculated**", expanded=False):
+    st.markdown("### 📐 **Output Calculation Breakdown & Mathematical Proof**")
+    
+    tab_calc1, tab_calc2, tab_calc3 = st.tabs([
+        "1️⃣ Mathematical Formulas",
+        "2️⃣ Live Supplier Math (Current Table Values)",
+        "3️⃣ Award Qualification & Why Lowest Price Doesn't Always Win"
+    ])
+
+    with tab_calc1:
+        st.markdown(
+            """
+            Each score in the table above is calculated using standard, transparent formulas:
+
+            1. **Price Score:**
+               $$\\text{Price Score} = 100 \\times \\frac{\\text{Lowest Quoted Price}}{\\text{Supplier Price}}$$
+               *(Lowest price gets 100.0 points; higher prices receive proportionally lower scores).*
+
+            2. **Delivery Score:**
+               $$\\text{Delivery Score} = 100 \\times \\frac{\\text{Fastest Delivery Weeks}}{\\text{Supplier Delivery Weeks}}$$
+
+            3. **Technical Score:**
+               $$\\text{Technical Score} = 100 - (40 \\times \\text{Critical Mismatches}) - (10 \\times \\text{Non-Critical Mismatches})$$
+
+            4. **Quality Score:**
+               $$\\text{Quality Score} = \\text{Supplier Track Record & ISO Rating (0 to 100)}$$
+
+            5. **Warranty Score:**
+               $$\\text{Warranty Score} = 100 \\times \\frac{\\text{Supplier Warranty (Years)}}{\\text{Longest Warranty Offered (Years)}}$$
+
+            6. **Composite Overall Weighted Score:**
+               $$\\text{Overall Score} = (S_{\\text{price}} \\times W_{\\text{price}}) + (S_{\\text{tech}} \\times W_{\\text{tech}}) + (S_{\\text{deliv}} \\times W_{\\text{deliv}}) + (S_{\\text{qual}} \\times W_{\\text{qual}}) + (S_{\\text{warr}} \\times W_{\\text{warr}})$$
+            """
+        )
+
+    with tab_calc2:
+        st.markdown("#### 🔢 **Live Mathematical Walkthrough with Active Quotes:**")
+        if current_quotes:
+            valid_prices = [float(q.get("unit_price_inr_lakh", 0)) for q in current_quotes if float(q.get("unit_price_inr_lakh", 0)) > 0]
+            valid_delivs = [int(q.get("delivery_weeks", 0)) for q in current_quotes if int(q.get("delivery_weeks", 0)) > 0]
+            valid_warrs = [int(q.get("warranty_years", 0)) for q in current_quotes if int(q.get("warranty_years", 0)) > 0]
+            
+            min_p = min(valid_prices) if valid_prices else 1.0
+            min_d = min(valid_delivs) if valid_delivs else 1
+            max_w = max(valid_warrs) if valid_warrs else 1
+            
+            st.info(f"📊 **Current Benchmarks:** Lowest Price = **₹{min_p:.2f}L** | Fastest Delivery = **{min_d} weeks** | Longest Warranty = **{max_w} years**")
+
+            calc_walkthrough = []
+            for q in current_quotes:
+                s_name = q.get("supplier_name", "")
+                p = float(q.get("unit_price_inr_lakh", 0))
+                d = int(q.get("delivery_weeks", 1))
+                w = int(q.get("warranty_years", 1))
+                t_score = float(tech_eval_map.get(s_name, {}).get("technical_score", q.get("technical_score", 90)))
+                q_score = float(q.get("quality_score", 90))
+
+                p_score = min(100.0, 100.0 * min_p / p) if p > 0 else 0
+                d_score = min(100.0, 100.0 * min_d / d) if d > 0 else 0
+                w_score = min(100.0, 100.0 * w / max_w) if max_w > 0 else 100
+
+                tot_w = w_price + w_tech + w_deliv + w_qual + w_warr or 100.0
+                ov = (p_score * w_price + t_score * w_tech + d_score * w_deliv + q_score * w_qual + w_score * w_warr) / tot_w
+
+                calc_walkthrough.append({
+                    "Supplier": s_name,
+                    "Price Math": f"100 × ({min_p:.1f} / {p:.1f}) = {p_score:.1f}",
+                    "Delivery Math": f"100 × ({min_d} / {d}) = {d_score:.1f}",
+                    "Tech Score": f"{t_score:.1f}",
+                    "Quality Score": f"{q_score:.1f}",
+                    "Warranty Math": f"100 × ({w} / {max_w}) = {w_score:.1f}",
+                    "Weighted Overall Math": f"({p_score:.1f}×{w_price} + {t_score:.1f}×{w_tech} + {d_score:.1f}×{w_deliv} + {q_score:.1f}×{w_qual} + {w_score:.1f}×{w_warr}) / {tot_w:.0f} = {ov:.1f}"
+                })
+
+            st.dataframe(pd.DataFrame(calc_walkthrough), use_container_width=True, hide_index=True)
+
+    with tab_calc3:
+        st.markdown(
+            """
+            #### 🛡️ **Why Lowest Price Doesn't Automatically Win:**
+            - **Supplier B is Cheapest (₹39.00L):** It gets the highest Price Score of `100.0`.
+            - **The Technical Mismatch:** Supplier B offered a **1000 kVA** transformer when **1250 kVA** was required. This triggers a `-40 point` penalty in Step 5.
+            - **Exclusion Rule:** Because Supplier B failed a critical parameter, it cannot be recommended as the winning bidder.
+            - **Best Overall Award:** Recommended to **Supplier A / Supplier C** which meet all technical requirements and offer the best combined balance of cost, delivery, and quality.
+            """
+        )
+
 st.markdown("---")
+
 
 # Visualizations: Bar Chart & Radar Chart
 st.markdown("### 📈 **Visual Techno-Commercial Analysis**")

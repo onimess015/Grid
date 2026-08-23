@@ -171,26 +171,72 @@ for eq_type, c_data in comm_scores.items():
 
         st.markdown("---")
 
-# Interactive Financial Rollup Calculation Breakdown
-with st.expander("🧮 **CLICK HERE: How Total Project Value & Financial Savings are Calculated**", expanded=False):
-    st.markdown(
-        """
-        ### 📐 **Total Project Financial Rollup Formulas:**
-        1. **Line Item Commitment:**
-           $$\\text{Line Total} = \\text{Effective Unit Price} \\times \\text{Required Quantity}$$
+# DEDICATED OUTPUT CALCULATION EXPLANATION BAR
+with st.expander("🧮 **CLICK HERE: Complete Step-by-Step Breakdown of How This Final Output is Calculated**", expanded=False):
+    st.markdown("### 📐 **How the Final Recommendations & Financial Output are Calculated:**")
+    
+    tab_out1, tab_out2, tab_out3 = st.tabs([
+        "🏆 Winner Selection Logic",
+        "💰 Financial Rollup & Savings Math",
+        "📋 Full Decision Flow Recap"
+    ])
 
-        2. **Total Original Bid Value:**
-           $$\\text{Total Original Value} = \\sum (\\text{Original Unit Price}_i \\times \\text{Quantity}_i)$$
+    with tab_out1:
+        st.markdown(
+            """
+            #### 1. How the Winning Supplier is Selected:
+            - **Technical Gate (Step 5):** Only bidders with **0 critical specification failures** (e.g. correct kVA capacity and nominal voltage) are permitted into the award pool. Supplier B (1000 kVA vs 1250 kVA required) was automatically disqualified.
+            - **Commercial Scoring (Step 6):** Qualified bidders are evaluated across 5 weighted criteria:
+              $$\\text{Overall Score} = (S_{\\text{price}} \\times 40\\%) + (S_{\\text{tech}} \\times 30\\%) + (S_{\\text{deliv}} \\times 15\\%) + (S_{\\text{qual}} \\times 10\\%) + (S_{\\text{warr}} \\times 5\\%)$$
+            - **Award Rule:** The qualified bidder with the **highest overall score** wins the recommendation card above.
+            """
+        )
 
-        3. **Total Negotiated Commitment Value:**
-           $$\\text{Total Negotiated Value} = \\sum (\\text{Negotiated Unit Price}_i \\times \\text{Quantity}_i)$$
+    with tab_out2:
+        st.markdown(
+            f"""
+            #### 2. Project Financial Math & Rollup Formulas:
+            - **Line Item Commitment:**
+              $$\\text{{Line Total}} = \\text{{Effective Unit Price}} \\times \\text{{Required Quantity}}$$
+              *(Example: ₹{total_neg_val:.2f} lakh total negotiated commitment).*
 
-        4. **Total Project Cost Savings (Value Created):**
-           $$\\text{Total Savings} = \\text{Total Original Value} - \\text{Total Negotiated Value}$$
-        """
-    )
+            - **Total Original Value:**
+              $$\\text{{Total Original Value}} = \\sum (\\text{{Original Unit Price}}_i \\times \\text{{Quantity}}_i) = \\mathbf{{₹{total_orig_val:.2f}\\text{{ lakh}}}}$$
+
+            - **Total Negotiated Value:**
+              $$\\text{{Total Negotiated Value}} = \\sum (\\text{{Negotiated Unit Price}}_i \\times \\text{{Quantity}}_i) = \\mathbf{{₹{total_neg_val:.2f}\\text{{ lakh}}}}$$
+
+            - **Total Project Cost Savings:**
+              $$\\text{{Total Savings}} = \\text{{Total Original Value}} - \\text{{Total Negotiated Value}} = \\mathbf{{₹{total_project_savings:.2f}\\text{{ lakh}}}}$$
+            """
+        )
+
+    with tab_out3:
+        st.markdown(
+            """
+            #### 3. Summary of the 8-Step Techno-Commercial Process:
+            ```
+            [1] 2000 kW Load / 11 kV Specs
+                     ↓
+            [2] 2 x 1250 kVA Transformers Structured
+                     ↓
+            [3] Formal RFQ-2026-001 Issued
+                     ↓
+            [4] Ingested Bids (Supplier A, B, C)
+                     ↓
+            [5] Tech Gate: Supplier B Disqualified (Undersized 1000 kVA)
+                     ↓
+            [6] Multi-Factor Commercial Ranking
+                     ↓
+            [7] 5% Targeted Price Concession Negotiated
+                     ↓
+            [8] Final Recommendation & Financial Value Realized
+            ```
+            """
+        )
 
 st.markdown("---")
+
 
 # PROJECT SUMMARY & FINANCIAL ROLLUP
 st.markdown("### 📊 **Total Project Procurement Summary**")
